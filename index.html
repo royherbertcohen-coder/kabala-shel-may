@@ -78,8 +78,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:Rubik,Arial,sans
   <div class="head">
     <h1>סופר מאי</h1>
     <div class="sub">סניף הכנסת &nbsp;|&nbsp; פרסומים, אירוח וכל השאר</div>
-    <div class="meta">קופאית: מאי גולן<br>משלם: אתה<br>שורות: <span id="nrows">355</span></div>
-    <div class="big"><span id="bigline">קבלה אחת. 355 שורות. 123,549 שקל</span><br>תודה שקנית אצלנו</div>
+    <div class="meta">קופאית: מאי גולן<br>משלם: אתה<br>שורות: <span id="nrows">315</span></div>
+    <div class="big"><span id="bigline">קבלה אחת. 315 שורות. 111,157 שקל</span><br>תודה שקנית אצלנו</div>
   </div>
 
   <div class="search"><input id="q" type="search" placeholder="חיפוש: ספק, סעיף, תאריך או סכום" aria-label="חיפוש"><div class="srow"><label>מיון: <select id="sortsel"><option value="date">לפי תאריך</option><option value="asc">מהסכום הקטן לגדול</option><option value="desc">מהסכום הגדול לקטן</option></select></label><div class="sres" id="sres"></div></div></div>
@@ -92,14 +92,14 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:Rubik,Arial,sans
   <div class="card" id="punchcard">
     <h3>כרטיס מועדון: כפר המכביה</h3>
     <div class="punch" id="punch"></div>
-    <div style="font-size:13px"><b id="punchn">56</b> קניות בכפר המכביה, בסך ₪<span id="punchs"></span>. הקנייה ה־<span id="nextn"></span> עלינו.</div>
+    <div style="font-size:13px"><b id="punchn">47</b> קניות בכפר המכביה, בסך ₪<span id="punchs"></span>. הקנייה ה־<span id="nextn"></span> עלינו.</div>
   </div>
 
   <div class="total">
     <div><span>סך הכל שורות</span><span id="t1"></span></div>
     <div><span>מתוכן אירוח וכיבודים</span><span id="t2"></span></div>
     <div><span>מתוכן פרסומים</span><span id="t3"></span></div>
-    <div><span>שורות שנוכו מהשכר, כולן או חלקן</span><span id="t5"></span></div>
+    <div><span>שורות שסומנו כמנוכות מהשכר (סכום השורות, כתקרה)</span><span id="t5"></span></div>
     <div class="g"><span>לתשלום</span><span id="t6"></span></div>
   </div>
 
@@ -110,7 +110,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:Rubik,Arial,sans
       <a href="https://main.knesset.gov.il/mk/Documents/MKExpenses2025.xlsx" target="_blank" rel="noopener">2025</a> ·
       <a href="https://main.knesset.gov.il/mk/Documents/MKExpenses2026Q2.xlsx" target="_blank" rel="noopener">ינואר עד יוני 2026</a><br>
       <span id="cutnote"></span> כל שורה פותחת את הקבלה שלה.<br>הנתונים גולמיים ולא מבוקרים, כפי שפורסמו. סימון "נוכה מהשכר" מופיע בהערת השורה בקובץ, ובחלק מהשורות מדובר בניכוי חלקי.<br>
-      <button class="btn" id="csv" style="margin-top:8px">הורד את כל השורות (CSV)</button>
+      <button class="btn" id="csv" style="margin-top:8px">הורד את השורות (CSV)</button>
     </div>
   </div>
 </div>
@@ -141,7 +141,7 @@ rows.forEach((r,i)=>{
   el.addEventListener('click',e=>{if(e.target.closest('.multi'))return;openReceipt(r,el)});
   el.dataset.i=i;
   const note=r.n&&r.n!=='S'?r.n:'';
-  el.innerHTML=`<div class="d">${fmtd(r.d)}</div><div class="v">${r.v}${r.n==='S'?'<span class="stamp">נוכה מהשכר</span>':''}${r.rc.length?'<span class="ico">קבלה'+(r.rc.length>1?' ('+r.rc.length+')':'')+'</span>':''}<i>${CAT[r.c]}${note?' · '+note:''}</i></div><div class="a ${r.a<0?'neg':''}">${r.a<0?'-':''}${Math.abs(r.a).toLocaleString('he-IL',{maximumFractionDigits:2})}</div>`;
+  el.innerHTML=`<div class="d">${fmtd(r.d)}</div><div class="v">${r.v}${r.n==='S'?'<span class="stamp">סומן: נוכה מהשכר</span>':''}${r.rc.length?'<span class="ico">קבלה'+(r.rc.length>1?' ('+r.rc.length+')':'')+'</span>':''}<i>${CAT[r.c]}${note?' · '+note:''}</i></div><div class="a ${r.a<0?'neg':''}">${r.a<0?'-':''}${Math.abs(r.a).toLocaleString('he-IL',{maximumFractionDigits:2})}</div>`;
   built.push(el);
   if(SWEET.length&&r===SWEET[SWEET.length-1]){const s=document.createElement('div');s.className='stop';s.textContent='ממתקי העיר: '+SWEET.length+' פעמים, סך הכל '+fmt(SWEET.reduce((a,x)=>a+x.a,0));(stopsAfter[i]=stopsAfter[i]||[]).push(s)}
   if(r===MACC[MACC.length-1]){const s=document.createElement('div');s.className='stop';s.textContent='כפר המכביה: '+MACC.length+' קניות. הקנייה ה־'+(MACC.length+1)+' עלינו';(stopsAfter[i]=stopsAfter[i]||[]).push(s)}
@@ -151,9 +151,9 @@ const els=built;
 // totals
 const by=c=>rows.filter(r=>r.c===c).reduce((s,r)=>s+r.a,0);
 t1.textContent=rows.length;t2.textContent=fmt(by('H'));t3.textContent=fmt(by('P'));
-t5.textContent=rows.filter(r=>r.n==='S').length+' מתוך '+rows.length;t6.textContent=fmt(TOTAL);
+t5.textContent=rows.filter(r=>r.n==='S').length+' מתוך '+rows.length+', '+fmt(rows.filter(r=>r.n==='S').reduce((x,r)=>x+r.a,0));t6.textContent=fmt(TOTAL);
 document.getElementById('nrows').textContent=rows.length;
-document.getElementById('cutnote').textContent='מוצגות רק שורות שיש להן קבלה מקורית שנפתחת: '+rows.length+' מתוך 439 שורות בקובץ של הכנסת, '+fmt(TOTAL)+' מתוך ₪200,384.';
+document.getElementById('cutnote').textContent='מוצגות רק שורות שיש להן קבלה מקורית שנפתחת: '+rows.length+' מתוך 439 שורות בקובץ של הכנסת, '+fmt(TOTAL)+' מתוך ₪200,384. ל־'+(439-rows.length)+' השורות האחרות, '+fmt(200384-TOTAL)+', לא מצאנו קבלה שנפתחת. הן בקובץ של הכנסת, בקישורים למעלה.';
 document.getElementById('bigline').textContent='קבלה אחת. '+rows.length+' שורות. '+Math.round(TOTAL).toLocaleString('he-IL')+' שקל';
 // punch
 punchs.textContent=Math.round(MACC_SUM).toLocaleString('he-IL');punchn.textContent=MACC.length;
@@ -190,7 +190,7 @@ function refresh(){
   });
   rowsEl.replaceChildren(frag);
   recum();
-  if(term){const tot=vis.reduce((s,i)=>s+rows[i].a,0);sres.textContent=vis.length?`נמצאו ${vis.length} שורות, סך הכל ${fmt(tot)}`:'לא נמצא כלום. נסו ספק אחר';}
+  if(term){const tot=vis.reduce((s,i)=>s+rows[i].a,0);sres.textContent=vis.length===1?`נמצאה שורה אחת, ${fmt(tot)}`:vis.length?`נמצאו ${vis.length} שורות, סך הכל ${fmt(tot)}`:'לא נמצא כלום. נסו ספק אחר';}
   else sres.textContent='';
   chip.classList.remove('on');
   measure();upd();
@@ -200,10 +200,11 @@ sortsel.onchange=()=>{mode=sortsel.value;window.scrollTo({top:0,behavior:'instan
 const avg=a=>a.reduce((s,r)=>s+r.a,0)/a.length;
 const FALAFEL=rows.filter(r=>r.v.includes('פלאפל'));
 const CARR=rows.filter(r=>/CARREFOUR/.test(r.v));
+const FALAFEL_N=FALAFEL,CARR_NS=CARR.filter(r=>r.n!=='S');
 const METERS=[
- v=>`${(v/avg(FALAFEL)).toFixed(0)} מנות פלאפל ג'ינה שוקן, במחיר הממוצע ששילמה שם`,
- v=>`${(v/avg(CARR)).toFixed(0)} עגלות קרפור, בגודל הממוצע של העגלה שלה`,
- v=>`${(v/avg(SWEET)).toFixed(1)} קניות בממתקי העיר, בגודל הממוצע של הקנייה שלה`
+ v=>`${(v/avg(FALAFEL)).toFixed(0)} קניות בפלאפל ג'ינה שוקן, בגודל הממוצע של קנייה בקבלה`,
+ v=>`${(v/avg(CARR_NS)).toFixed(0)} קניות בקרפור, בגודל הממוצע של קנייה בקבלה`,
+ v=>`${(v/avg(SWEET)).toFixed(1)} קניות בממתקי העיר, בגודל הממוצע של קנייה בקבלה`
 ];
 function upd(){
   const i=idxAtScroll();
@@ -238,6 +239,7 @@ function openReceipt(r,el){
   m.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();e.stopPropagation();popReceipt(a.href)});
   el.appendChild(m);
 }
+document.getElementById('csv').textContent='הורד את '+rows.length+' השורות (CSV)';
 document.getElementById('csv').onclick=()=>{
   const esc=s=>'"'+String(s).replace(/"/g,'""')+'"';
   const lines=['תאריך,סעיף,ספק,סכום,הערה'].concat(rows.map(r=>[r.d,CAT[r.c],r.v,r.a,r.n==='S'?'נוכה מהשכר':r.n].map(esc).join(',')));
